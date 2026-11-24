@@ -81,8 +81,8 @@
             </div>
 
             <!-- Nút Mua Ngay -->
-            <form asp-controller="GioHang" asp-action="ThemVaoGio" method="post" class="d-flex gap-2">
-                <input type="hidden" name="bientheId" id="selectedVariantId" value="@bienTheDau?.Bientheid" />
+            <form asp-controller="GioHang" asp-action="Them" method="post" class="d-flex gap-2">
+                <input type="hidden" name="bientheid" id="selectedVariantId" value="@bienTheDau?.Bientheid" />
                 <button type="submit" class="btn btn-danger btn-lg flex-grow-1 fw-bold py-3">
                     MUA NGAY<br />
                     <span class="fw-normal small">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>

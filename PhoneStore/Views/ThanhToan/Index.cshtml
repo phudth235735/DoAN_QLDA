@@ -1,0 +1,9 @@
+@model PhoneStore.ViewModels.ThanhToanViewModel
+@{ ViewData["Title"] = "Thanh toán"; }
+<div class="container py-4"><h2>Thông tin đặt hàng</h2><div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="Index" method="post" class="card card-body mt-3"><div class="mb-3"><label asp-for="TenNguoiNhan" class="form-label">Họ tên người nhận</label><input asp-for="TenNguoiNhan" class="form-control"/><span asp-validation-for="TenNguoiNhan" class="text-danger"></span></div>
+<div class="mb-3"><label asp-for="SdtNguoiNhan" class="form-label">Số điện thoại</label><input asp-for="SdtNguoiNhan" class="form-control"/><span asp-validation-for="SdtNguoiNhan" class="text-danger"></span></div>
+<div class="mb-3"><label asp-for="DiaChiGiaoHang" class="form-label">Địa chỉ giao hàng</label><textarea asp-for="DiaChiGiaoHang" class="form-control"></textarea><span asp-validation-for="DiaChiGiaoHang" class="text-danger"></span></div>
+<div class="mb-3"><label asp-for="PhuongThucThanhToan" class="form-label">Phương thức thanh toán</label><select asp-for="PhuongThucThanhToan" class="form-select"><option value="COD">Thanh toán khi nhận hàng (COD)</option><option value="ChuyenKhoan">Chuyển khoản (cần cấu hình tài khoản nhận tiền)</option></select></div>
+<div class="mb-3"><label asp-for="GhiChu" class="form-label">Ghi chú</label><textarea asp-for="GhiChu" class="form-control"></textarea></div><button class="btn btn-danger btn-lg">Xác nhận đặt hàng</button></form></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

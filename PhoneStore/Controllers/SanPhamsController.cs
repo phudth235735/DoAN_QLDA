@@ -38,6 +38,9 @@ namespace PhoneStore.Controllers
                 .Include(s => s.Danhmuc)
                 .Include(s => s.Hang)
                 .Include(s => s.Nhucau)
+                .Include(s => s.BienTheSanphams)
+                .Include(s => s.KhuyenMaiSanPhams)
+                .Include(s => s.BinhLuans)
                 .FirstOrDefaultAsync(m => m.Sanphamid == id);
             if (sanPham == null)
             {

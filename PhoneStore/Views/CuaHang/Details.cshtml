@@ -1,0 +1,19 @@
+@model PhoneStore.Models.SanPham
+@{ ViewData["Title"] = Model.Tensanpham; var danhGia = Model.BinhLuans.Where(x => x.Kichhoat).ToList(); }
+<div class="container py-3">
+    <a asp-action="Index" class="text-decoration-none">← Tiếp tục mua sắm</a>
+    @if (TempData["ThongBao"] != null){<div class="alert alert-success mt-2">@TempData["ThongBao"]</div>}
+    @if (TempData["Loi"] != null){<div class="alert alert-danger mt-2">@TempData["Loi"]</div>}
+    <div class="row g-4 mt-1">
+        <div class="col-md-5"><img src="~/images/@Model.Hinhanh" class="img-fluid w-100 border rounded p-3" style="max-height:420px;object-fit:contain" onerror="this.src='https://placehold.co/500x400?text=Phone'" /></div>
+        <div class="col-md-7"><h2>@Model.Tensanpham</h2><p class="text-muted">@Model.Hang?.Tenhang · @Model.Danhmuc?.Tendanhmuc</p><p>@Model.Tomtat</p>
+            <div class="row row-cols-2 g-2 mb-3"><div>RAM: <b>@Model.Ram</b></div><div>Màn hình: <b>@Model.Manhinh</b></div><div>Chip: <b>@Model.Chip</b></div><div>Pin: <b>@Model.Pin</b></div><div>Camera: <b>@Model.Camera</b></div><div>Hệ điều hành: <b>@Model.Hedieuhanh</b></div></div>
+            <h5>Chọn phiên bản</h5>
+            @foreach(var bt in Model.BienTheSanphams){<div class="border rounded p-3 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2"><div><b>@bt.Dungluong - @bt.Mausac</b><div class="text-danger fw-bold">@((bt.Giakhuyenmai ?? bt.Giaban).ToString("N0")) đ</div><small class="text-muted">Còn @bt.Soluongton sản phẩm</small></div>
+                @if(bt.Soluongton > 0){<form asp-controller="GioHang" asp-action="Them" method="post"><input type="hidden" name="bientheid" value="@bt.Bientheid"/><input type="hidden" name="soLuong" value="1"/><button class="btn btn-danger">Thêm vào giỏ</button></form>}else{<button class="btn btn-secondary" disabled>Hết hàng</button>}</div>}
+        </div>
+    </div>
+    <hr/><h4>Đánh giá sản phẩm (@danhGia.Count)</h4>
+    <form asp-action="DanhGia" method="post" class="card card-body mb-3"><input type="hidden" name="sanphamid" value="@Model.Sanphamid"/><div class="row g-2"><div class="col-md-3"><input class="form-control" name="nguoiDang" placeholder="Tên của bạn" required/></div><div class="col-md-2"><select class="form-select" name="soSao"><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></div><div class="col-md-7"><input class="form-control" name="noiDung" placeholder="Chia sẻ cảm nhận..." required/></div><div class="col-12"><button class="btn btn-outline-danger">Gửi đánh giá</button></div></div></form>
+    @foreach(var dg in danhGia){<div class="border-bottom py-2"><b>@dg.Nguoidang</b> <span class="text-warning">@("★".PadLeft(dg.Sosao, '★'))</span><small class="text-muted ms-2">@dg.Ngaybinhluan.ToString("dd/MM/yyyy")</small><p class="mb-1">@dg.Noidung</p></div>}
+</div>

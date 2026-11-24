@@ -1,0 +1,4 @@
+@model PhoneStore.Models.DonHang
+@{ ViewData["Title"] = "Đặt hàng thành công"; }
+<div class="container py-5 text-center"><div class="display-4 text-success">✓</div><h2>Đặt hàng thành công!</h2><p>Mã đơn hàng của bạn: <strong class="text-danger">@Model.Madonhang</strong></p><p>Tổng tiền: <strong>@Model.Tongtien.ToString("N0") đ</strong></p><p>Hãy lưu mã đơn và số điện thoại để tra cứu tình trạng đơn hàng.</p><a asp-controller="DonHangs" asp-action="TraCuu" class="btn btn-danger">Tra cứu đơn hàng</a> <a asp-controller="CuaHang" asp-action="Index" class="btn btn-outline-secondary">Tiếp tục mua sắm</a>
+@if(Model.Phuongthucthanhtoan == "ChuyenKhoan"){<div class="alert alert-warning mt-4">Đơn hàng đã được ghi nhận ở hình thức chuyển khoản. QR thanh toán chưa được bật vì dự án chưa có thông tin ngân hàng nhận tiền.</div>}</div>

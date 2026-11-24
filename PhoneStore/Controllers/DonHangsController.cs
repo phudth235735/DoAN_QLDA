@@ -46,6 +46,50 @@ namespace PhoneStore.Controllers
             return View(donHang);
         }
 
+
+        // Khach hang tra cuu don hang bang ma don va so dien thoai nhan hang.
+        [HttpGet]
+        public IActionResult TraCuu() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TraCuu(string maDon, string soDienThoai)
+        {
+            if (string.IsNullOrWhiteSpace(maDon) || string.IsNullOrWhiteSpace(soDienThoai))
+            {
+                ModelState.AddModelError(string.Empty, "Vui lòng nhập mã đơn và số điện thoại.");
+                return View();
+            }
+            var don = await _context.DonHangs.AsNoTracking()
+                .Include(x => x.ChiTietDonHangs).ThenInclude(x => x.Bienthe).ThenInclude(x => x.Sanpham)
+                .FirstOrDefaultAsync(x => x.Madonhang == maDon.Trim() && x.Sdtnguoinhan == soDienThoai.Trim());
+            if (don == null)
+            {
+                ModelState.AddModelError(string.Empty, "Không tìm thấy đơn hàng phù hợp.");
+                return View();
+            }
+            return View("KetQuaTraCuu", don);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Huy(int id, string soDienThoai)
+        {
+            var don = await _context.DonHangs.Include(x => x.ChiTietDonHangs).ThenInclude(x => x.Bienthe)
+                .FirstOrDefaultAsync(x => x.Donhangid == id && x.Sdtnguoinhan == soDienThoai);
+            if (don == null) return NotFound();
+            if (don.Trangthai != 0)
+            {
+                TempData["Loi"] = "Chỉ có thể hủy đơn hàng đang chờ xác nhận.";
+                return RedirectToAction(nameof(TraCuu));
+            }
+            foreach (var ct in don.ChiTietDonHangs) ct.Bienthe.Soluongton += ct.Soluong;
+            don.Trangthai = 4; // Da huy
+            await _context.SaveChangesAsync();
+            TempData["ThongBao"] = "Đã hủy đơn hàng.";
+            return RedirectToAction(nameof(TraCuu));
+        }
+
         // GET: DonHangs/Create
         public IActionResult Create()
         {
